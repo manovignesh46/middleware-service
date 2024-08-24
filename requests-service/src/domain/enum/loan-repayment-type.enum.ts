@@ -1,0 +1,5 @@
+export enum LoanRepaymentType {
+  FULL_PAYMENT = 'FULL_PAYMENT',
+  AMOUNT_DUE = 'AMOUNT_DUE',
+  CUSTOM_AMOUNT = 'CUSTOM_AMOUNT',
+}

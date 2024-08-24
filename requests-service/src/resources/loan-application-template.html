@@ -1,0 +1,241 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .rounded-corner {
+      border-radius: 4px;
+    }
+
+    .flex-container {
+      display: flex;
+    }
+
+    .general-text {
+      color: black;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="flex-container" style="flex-direction: row; justify-content: space-evenly;">
+    <div>
+      <img src={{bankLogo}} width="304" height="75">
+    </div>
+    <div>
+      <p class="general-text" style="font-weight: bold; margin: 0;">OPPORTUNITY BANK UGANDA LIMITED</p>
+      <p class="general-text" style=" margin: 0;">P.O Box 3625,</p>
+      <p class="general-text" style=" margin: 0;">Kampala, Uganda</p>
+    </div>
+  </div>
+  <table align="center" width="100%" style="margin-top:0.5%; margin-bottom:0.5%">
+    <tr>
+      <td width="25%">
+        <b>Loan ID</b>
+      </td>
+      <td width="20%">&nbsp;{{formData.referenceNumber}}</td>
+      <td width="30%">
+        <b>Application Date</b>
+      </td>
+      <td width="25%">&nbsp;{{applicationDateTime}}</td>
+    </tr>
+    <tr>
+      <td width="25%">
+        <b>First Name</b>
+      </td>
+      <td width="20%">&nbsp;{{formData.firstName}}</td>
+      <td width="30%">
+        <b>Given Name(s)</b>
+      </td>
+      <td width="25%">&nbsp;{{formData.givenName}}</td>
+    </tr>
+  </table>
+  <table align="center" width="100%" style="border-collapse: collapse; padding: 5px;">
+    <tr>
+      <td align="center" style="background-color: #2E6DBA; color: white; padding: 5px;" class="rounded-corner">
+        <b>Key Facts and Product Details</b>
+      </td>
+    </tr>
+  </table>
+  <table align="center" width="100%" style="padding: 0.3%;">
+    <tr>
+      <td>
+        <u>
+          <b>Aim and Benefits of this Product</b>
+        </u>
+      </td>
+    </tr>
+  </table>
+  <table align="center" width=100% style="padding:0.3%;">
+    <tr>
+      <td align="justify">{{content.aimAndBenefitsLine1}}&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="justify">{{content.aimAndBenefitsLine2}}&nbsp;</td>
+    </tr>
+  </table>
+  <br>
+  <table align="center" width="80%" style="border-collapse: collapse; padding: 5px;">
+    <tr height="15px">
+      <td align="center" style="background-color: #2E6DBA; color: white; padding: 5px;">
+      </td>
+    </tr>
+  </table>
+  <table align="center" width=80% border="2">
+    <tr>
+      <td width=" 20%" style="padding-left:10;">Product Name</td>
+      <td width="30%" style="padding-left:10;">&nbsp;{{formData.productName}}</td>
+    </tr>
+    <tr>
+      <td style="padding-left:10;">School Fees Amount Disbursed</td>
+      <td style="padding-left:10;">&nbsp;{{formData.schoolFeesAmount}}</td>
+    </tr>
+    <tr>
+      <td style="padding-left:10;">Loan Application fees (3%)</td>
+      <td style="padding-left:10;">&nbsp;{{formData.arrangementFeesAmount}}</td>
+    </tr>
+    <tr>
+      <td style="padding-left:10;">Government Taxes</td>
+      <td style="padding-left:10;">&nbsp;{{formData.governmentTaxesAmount}}</td>
+    </tr>
+    <tr>
+      <td style="padding-left:10;">Loan Interest (5% per month)</td>
+      <td style="padding-left:10;">&nbsp;{{formData.loanInterestAmount}}</td>
+    </tr>
+    <tr>
+      <td style="padding-left:10;">
+        <b>Total Amount Payable</b>
+      </td>
+      <td style="padding-left:10;">&nbsp;{{formData.totalAmountPayable}}</td>
+    </tr>
+  </table>
+  <table align="center" width="80%" style="border-collapse: collapse; padding: 5px;">
+    <tr height="8px">
+      <td align="center" style="background-color: #2E6DBA; color: white; padding: 5px;">
+      </td>
+    </tr>
+  </table>
+  <table align="center" width=80% border="2">
+    <tr>
+      <td width="20%" style="padding-left:10;">Loan Duration</td>
+      <td width="30%" style="padding-left:10;">&nbsp;{{formData.loanPeriod}} {{formData.loanDurationPeriod}}</td>
+    </tr>
+    <tr>
+      <td style="padding-left:10;">Installment Frequency</td>
+      <td style="padding-left:10;">&nbsp;{{formData.installmentFrequency}}</td>
+    </tr>
+    <tr>
+      <td style="padding-left:10;">Installment Amount</td>
+      <td style="padding-left:10;">&nbsp;{{formData.installmentAmount}}</td>
+    </tr>
+    <tr>
+      <td style="padding-left:10;">First installment Date</td>
+      <td style="padding-left:10;">&nbsp;{{formData.firstInstallmentDate}}</td>
+    </tr>
+    <tr>
+      <td style="padding-left:10;">Last installment Date</td>
+      <td style="padding-left:10;">&nbsp;{{formData.lastInstallmentDate}}</td>
+    </tr>
+  </table>
+
+  <table align="center" width="80%" style="border-collapse: collapse; padding: 5px;">
+    <tr height="8px">
+      <td align="center" style="background-color: #2E6DBA; color: white; padding: 5px;">
+      </td>
+    </tr>
+  </table>
+
+  <table align="center" width=80% border="2">
+    <tr>
+      <td width="20%" style="padding-left:10;">Loan paid in favour of :</td>
+      <td width="30%" style="padding-left:10;">&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="padding-left:30;">Student Name</td>
+      <td style="padding-left:10;">&nbsp;{{formData.studentName}}</td>
+    </tr>
+    <tr>
+      <td style="padding-left:30;">Registration Number</td>
+      <td style="padding-left:10;">&nbsp;{{formData.studentRegistrationNumber}}</td>
+    </tr>
+    <tr>
+      <td style="padding-left:30;">School Name</td>
+      <td style="padding-left:10;">&nbsp;{{formData.schoolName}}</td>
+    </tr>
+    <tr>
+      <td colspan="2" style="font-family:courier;font-size: small;">Note:
+        <br>{{content.note1}}
+        <br>{{content.note2}}
+      </td>
+    </tr>
+  </table>
+  <br>
+  <table align="center" width="100%" style="border-collapse: collapse; padding: 5px;">
+    <tr>
+      <td align="center" style="background-color: #2E6DBA; color: white; padding: 5px;" class="rounded-corner">
+        <b>Loan Repayment Plan</b>
+      </td>
+    </tr>
+  </table>
+  <br>
+  <table align="center" width=80% border="2">
+    <tr bgcolor="#4472c4">
+      {{#each columnheadings}}
+      <td>
+        <strong style=" color: white;">{{this}}</strong>
+      </td>
+      {{/each}}
+    </tr>
+
+    {{#each formData.emis}}
+    <tr>
+      {{#each this}}
+      <td width="50%">{{this}}</td>
+      {{/each}}
+
+    </tr>
+    {{/each}}
+
+
+
+  </table>
+
+  <table align="center" width=100%>
+    <tr>
+      <td><br>{{content.declaration1_1}} <a href={{content.declaration1_2}}>terms and condition</a>
+        {{content.declaration1_3}} <b>{{content.declaration1_4}}</b> {{content.declaration1_5}}
+        <b>{{content.declaration1_6}}</b> {{content.declaration1_7}}<br>
+      </td>
+    </tr>
+    <tr>
+      <td>{{content.declaration2}}</td>
+    </tr>
+    <tr>
+      <td align="center" style="color: #4CAF50; font-style: italic; font-weight: bold;">This is a digital document hence
+        does not bear any signature.</td>
+    </tr>
+  </table>
+
+  <div class="flex-container" style="flex-direction: column; float: right; margin-right: 10%; margin-bottom: 2%;">
+    <div class="flex-container" style="flex-direction: row; ">
+      <div style="padding: 8px;"><b>Date:</b></div>
+      <div style="padding: 8px;">{{currentTimestamp}}</div>
+    </div>
+    <div class="flex-container" style="flex-direction: row;">
+      <div style="padding: 8px;"><b>Powered by:</b></div>
+      <div style="padding: 8px;">
+        <div>
+          <b>FURAHA HOLDING LIMITED</b>
+        </div>
+        <div>
+          <img src={{furahaIcon}} width="100" height="100">
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</body>
+
+</html>

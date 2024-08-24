@@ -1,0 +1,42 @@
+import { Gender } from '../enum/gender.enum';
+import { WhitelistStatus } from '../enum/whitelistStatus.enum';
+import { IBase } from './base.interface';
+
+export interface IWhitelistedStudentDetails extends IBase {
+  studentId: string;
+  associatedCustomerId: string;
+  aggregatorId: string;
+  requestReferenceNumber: string;
+  responseStatusCode: string;
+  responseStatusMessage: string;
+  studentSchoolRegnNumber: string;
+  studentFullName: string;
+  studentFirstName: string;
+  studentMiddleName: string;
+  studentSurname: string;
+  studentDob: Date;
+  studentDateCreated: Date;
+  studentGender: Gender;
+  studentClass: string;
+  studentSchoolCode: string;
+  schoolName: string;
+  currentSchoolFees: number;
+  minPayableMode: string;
+  minPayableAmount: number;
+  studentPaymentCode: string;
+  studentPCOId: string;
+  isCustomerConfirmed: boolean;
+  isStudentDeleted: boolean;
+  isLOSUpdated: boolean;
+  isLOSDeleted: boolean;
+  leadId: string;
+  currentStatus: WhitelistStatus;
+  term1Fee: number;
+  term2Fee: number;
+  term3Fee: number;
+  termsAcademicYear: string;
+  totalTermsFee: number;
+  lastPaymentAmount: number;
+  lastPaymentDate: string;
+  paymentsCount: number;
+}

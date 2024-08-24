@@ -1,0 +1,54 @@
+export class CustomerIdCardDetailsDTO {
+  id: string;
+  custId: string;
+  ocrGivenName: string;
+  ocrSurname: string;
+  ocrNIN: string;
+  ocrNINExpiryDate: string; //this is stored as a string - raw value from accurascan
+  parsedOcrNINExpiryDate: Date;
+  ocrDOB: Date;
+  parsedOcrDOB: Date;
+  ocrGender: string;
+  ocrNationality: string;
+  ocrDateOfExpiry: Date;
+  ocrCardNo: string;
+  ocrSignature: string;
+  ocrFace: string;
+  ocrIdFront: string;
+  ocrIdBack: string;
+  mrzGivenName: string;
+  mrzSurname: string;
+  mrzNIN: string;
+  mrzNINExpiryDate: string; //this is stored as a string - raw value from accurascan
+  parsedMrzNINExpiryDate: Date;
+  rawMrzDOB: string;
+  mrzDOB: Date;
+  mrzGender: string;
+  mrzExpirationDate: Date;
+  mrzIssuedDate: Date;
+  mrzCountry: string;
+  mrzNationality: string;
+  mrzString: string;
+  requestLoadJSON: string;
+  scannedCardImageFront: string;
+  scannedCardImageBack: string;
+  faceImage: string;
+  nonPresignedImageFront: string;
+  nonPresignedImageBack: string;
+  nonPresignedFaceImage: string;
+  editedGivenName: string;
+  editedSurname: string;
+  editedNIN: string;
+  editedDOB: Date;
+  editedNINExpiryDate: Date;
+  telcoNINMrzStatus: string;
+  telcoNameMrzStatus: string;
+  telcoNameMrzPercent: number;
+  addressLine1: string;
+  addressLine2: string;
+  addressLine3: string;
+  city: string;
+  district: string;
+  countryOfResidence: string;
+  addressType: string;
+}

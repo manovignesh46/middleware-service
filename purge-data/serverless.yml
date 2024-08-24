@@ -1,0 +1,26 @@
+# Welcome to serverless. Read the docs
+# https://serverless.com/framework/docs/
+
+# Serverless.yml is the configuration the CLI
+# uses to deploy your code to your provider of choice
+
+# The `service` block is the name of the service
+service: purge-data
+
+frameworkVersion: '3'
+
+# The `provider` block defines where your service will be deployed
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+# The `functions` block defines what code to deploy
+functions:
+  purgeData:
+    handler: handler.purgeData
+    # The `events` block defines how to trigger the handler.purgeData code
+    events:
+      - http:
+          path: purge-90-days-data
+          method: post
+          cors: true

@@ -1,0 +1,115 @@
+name: Deploy to QA - Notification Service
+on: 
+  push:
+    branches:
+      - 'release-*'
+
+jobs:
+  DeployQa:
+    environment:
+      name: qa
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    defaults:
+      run:
+        working-directory: notification-service
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "npm"
+          cache-dependency-path: "notification-service/package-lock.json"
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm run build
+          
+      - name: Install Trivy
+        run: |
+          wget https://github.com/aquasecurity/trivy/releases/download/v0.20.0/trivy_0.20.0_Linux-64bit.tar.gz
+          tar zxvf trivy_0.20.0_Linux-64bit.tar.gz
+          sudo mv trivy /usr/local/bin/
+
+      - name: Configure AWS Credentials Action For GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::496776144465:role/CodeDeployRoleforGitHub
+          aws-region: eu-west-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build Docker image
+        run: |
+          docker build -t notification-service:${GITHUB_SHA} .
+          
+      - name: Run Trivy Scan
+        run: trivy --format json -o trivy-results.json notification-service:${GITHUB_SHA}
+        id: trivy-scan
+        
+      - name: Print Trivy Results
+        run: cat trivy-results.json
+
+      - name: Check for Critical Vulnerabilities
+        run: |
+          if grep -q '"Severity": "CRITICAL"' trivy-results.json; then
+            echo "Critical vulnerabilities were found in the Docker image."
+            echo "notify-team=true" >> $GITHUB_ENV
+          else
+            echo "No critical vulnerabilities found in the Docker image."
+            echo "notify-team=false" >> $GITHUB_ENV
+          fi
+          
+        id: check-vulnerabilities 
+       
+      - name: Print Notify Team
+        run: echo "notify-team=$notify-team"
+
+      - name: Send Slack Notification
+        if: ${{ env.notify-team == 'true' }}
+        uses: 8398a7/action-slack@v3
+        with:
+          status: 'failure'
+          fields: |
+            {{message}}
+          channel: '3-cloud_devops'
+          token: ${{ secrets.SLACK_TOKEN }}
+          text: |
+            Critical vulnerabilities were found in the Docker image.
+
+      - name: Tag Docker image push
+        id: push-image
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          docker tag notification-service:${GITHUB_SHA} $REGISTRY/services:notification-service.${GITHUB_SHA}
+          docker push $REGISTRY/services:notification-service.${GITHUB_SHA}
+          echo "image=$REGISTRY/services:notification-service.${GITHUB_SHA}" >> $GITHUB_OUTPUT
+
+      - name: Copy Task Definition
+        run: |
+          aws ecs describe-task-definition --task-definition notificationsvc --query taskDefinition > task-definition.json
+          cat task-definition.json
+
+      - name: Render Amazon ECS task definition
+        id: render-web-container
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: notification-service/task-definition.json
+          container-name: notificationsvc
+          image: ${{steps.push-image.outputs.image}}
+
+      - name: Deploy to Amazon ECS service
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.render-web-container.outputs.task-definition }}
+          service: notificationservice
+          cluster: furaha-cluster

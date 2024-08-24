@@ -1,0 +1,47 @@
+name: Jira Issue Creator
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # This will run the action once every day. You can adjust it as needed.
+
+jobs:
+  create_issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create JIRA Issue for Security Defects
+        run: |
+          # Use GitHub's REST APIs to get the list of code scanning alerts
+          GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          REPO=${{ github.repository }}
+          API_URL="https://api.github.com/repos/$REPO/code-scanning/alerts"
+
+          # Get the list of alerts
+          ALERTS=$(curl -s -H "Authorization: token $GITHUB_TOKEN" $API_URL)
+
+          # Parse the alerts and create a JIRA issue for each one
+          echo $ALERTS | jq -r '.[] | "\(.rule.name):\(.most_recent_instance.classifications)"' | while read line; do
+            # Use JIRA's REST APIs to create an issue
+            JIRA_API_URL="https://your-jira-instance.atlassian.net/rest/api/2/issue"
+            JIRA_AUTH="Basic $(echo -n "email:api_token" | base64)"
+
+            ISSUE=$(curl -s -X POST -H "Authorization: $JIRA_AUTH" -H "Content-Type: application/json" --data '{
+              "fields": {
+                "project": {
+                  "key": "YOUR_PROJECT_KEY"
+                },
+                "summary": "Security defect detected: '"$line"'",
+                "description": "GitHub Advanced Security found a security defect: '"$line"'",
+                "issuetype": {
+                  "name": "Bug"
+                }
+              }
+            }' $JIRA_API_URL)
+
+            echo "Created issue: $ISSUE"
+          done
+        env:
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}

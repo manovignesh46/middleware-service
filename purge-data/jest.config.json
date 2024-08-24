@@ -1,0 +1,8 @@
+{
+    "testRegex": "((\\.|/*.)(spec))\\.js?$",
+    "globals": {
+        "ts-jest": {
+            "isolatedModules": true
+        }
+    }
+}

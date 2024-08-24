@@ -1,0 +1,25 @@
+npm i @nestjs/microservices
+npm i ts-node --save-dev
+npm i @nestjs/typeorm typeorm sqlite3
+npm i @nestjs/config
+npm i class-transformer 
+npm i class-validator
+npm i dotenv
+npm i pg
+
+
+Update eslintrc
+'prettier/prettier': [
+  'error',
+  {
+    'endOfLine': 'auto',
+  }
+]
+
+docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 postgres
+
+create .env file
+
+
+
+

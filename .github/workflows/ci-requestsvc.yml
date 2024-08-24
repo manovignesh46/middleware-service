@@ -1,0 +1,119 @@
+name: 'CI-requests-service'
+on:
+  pull_request:
+    paths:
+      - "requests-service/**"
+    branches: ["dev","release-*"]
+
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: requests-service
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: set up NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          cache: "npm"
+          cache-dependency-path: "requests-service/package-lock.json"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: lint test
+        run: |
+          npm install eslint
+          npm run lint
+
+  tests-coverage:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: requests-service
+    needs: lint
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: set up NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          cache: "npm"
+          cache-dependency-path: "requests-service/package-lock.json"
+
+      - name: Install dependencies
+        run: |
+          echo $PWD
+          npm ci
+
+      - name: unit tests
+        run: npm run test --no-watchAll
+
+      - name: coverage test
+        run: npm run test:cov
+
+  sonar:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: requests-service
+    needs: lint
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: set up NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          cache: "npm"
+          cache-dependency-path: "requests-service/package-lock.json"
+
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        with:
+            projectBaseDir: ./requests-service
+        env:
+            SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            SONAR_PROJECTKEY: ${{ secrets.SONAR_PROJECTKEY }}
+        
+      # - name: Sonar Gate
+      #   uses: sonarsource/sonarqube-quality-gate-action@master
+      #   timeout-minutes: 5
+      #   with:
+      #     scanMetadataReportFile: ./requests-service/.scannerwork/report-task.txt
+      #   env:
+      #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #     SONAR_PROJECTKEY: ${{ secrets.SONAR_PROJECTKEY }}
+
+  build:
+    needs: ['tests-coverage', 'sonar']
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: requests-service
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: Use NodeJS 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          cache: "npm"
+          cache-dependency-path: "requests-service/package-lock.json"
+      - run: |
+          npm ci
+          npm run build

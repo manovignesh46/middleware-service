@@ -1,0 +1,31 @@
+export class FSCreateTicketResponseDTO {
+  cc_emails: string[];
+  fwd_emails: string[];
+  reply_cc_emails: string[];
+  fr_escalated: boolean;
+  spam: boolean;
+  // email_config_id
+  // group_id
+  priority: number;
+  requester_id: number;
+  requested_for_id: number;
+  // responder_id
+  source: number;
+  status: number;
+  subject: string;
+  // to_emails
+  // department_id
+  id: number;
+  type: string;
+  due_by: Date;
+  fr_due_by: Date;
+  is_escalated: boolean;
+  description: string;
+  description_text: string;
+  category: string;
+  sub_category: string;
+  item_category: string;
+  created_at: Date;
+  updated_at: Date;
+  attachments: string[];
+}

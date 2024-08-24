@@ -1,0 +1,34 @@
+export enum ResponseStatusCode {
+  //General
+  SUCCESS = 2000,
+  FAIL = 4000,
+  GENERIC_ERROR_500 = 500,
+
+  //Cognito SignUp
+  LEAD_NOT_ENHANCED = 4001,
+  PIN_CONFIRM_PIN_MISMATCH = 4006,
+  USERNAME_EXISTS = 4007,
+  USER_NOT_FOUND = 4004,
+
+  //Cognito Login
+  TRIGGER_LOGIN_FAIL = 4002,
+  LOGIN_LOCK = 4014,
+  LOGIN_OPTOUT_OR_CLOSED = 4015,
+
+  //Cognito login otp verify
+  OTP_FAIL = 4005,
+  OTP_EXPIRED = 3004,
+
+  //reset pin
+  INVALID_TOKEN = 4009,
+  RESET_PIN_FAIL = 4008,
+
+  //logout
+  LOGOUT_FAIL = 4003,
+
+  //Device Binding Error
+  DEVICE_ALREADY_BOUND = 4010,
+  SIGNUP_DEVICE_ALREADY_BOUND = 4016,
+  NO_OLD_DEVICE = 4012,
+  MATCHING_DEVICE_ID = 4013,
+}

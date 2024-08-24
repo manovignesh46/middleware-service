@@ -1,0 +1,25 @@
+{
+  "name": "purge-data",
+  "version": "1.0.0",
+  "description": "purging the PII data from DB",
+  "type": "module",
+  "main": "handler.js",
+  "scripts": {
+    "start": "node handler.js",
+    "test": "jest --config ./jest.config.json",
+    "test:watch": "npm run test -- --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "pg": "^8.10.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.21.4",
+    "jest": "^29.5.0"
+  },
+  "jest": {
+    "transform": {}
+  }
+}
